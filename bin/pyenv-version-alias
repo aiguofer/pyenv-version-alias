@@ -39,9 +39,7 @@ if [ -n "$alias" ]; then
     # Write the version out to disk.
     # Create an empty file. Using "rm" might cause a permission error.
     > "$PYENV_VERSION_ALIAS_FILE"
-    for version in "${versions[@]}"; do
-        echo "$version" >> "$PYENV_VERSION_ALIAS_FILE"
-    done
+    echo "$alias" >> "$PYENV_VERSION_ALIAS_FILE"
 else
     PYENV_VERSION_NAME="$(pyenv-version-name)"
     PYENV_VERSION_ALIAS="$(pyenv-version-file-read "$PYENV_VERSION_ALIAS_FILE" || true)"
