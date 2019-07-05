@@ -16,10 +16,24 @@ set -e
 alias=("$1")
 PYENV_GLOBAL_FILE="${PYENV_ROOT}/version"
 
-if [ -z "$PYENV_VERSION" ]; then
-  PYENV_VERSION_FILE="$(pyenv-version-file)"
-  PYENV_VERSION_ALIAS_FILE="$PYENV_VERSION_FILE-alias"
+if [ -n "$PYENV_VERSION" ]; then
+    # version-alias doesn't apply to using PYENV_VERSION env var
+
+    if [ -n "$alias" ]; then
+        echo "You can't set an alias when using PYENV_VERSION, please set $PYENV_VERSION_ALIAS instead"
+    else
+        if [ -n "$PYENV_VERSION_ALIAS" ]; then
+            echo "$PYENV_VERSION_ALIAS"
+        else
+            echo "$PYENV_VERSION"
+        fi
+    fi
+    exit 0
 fi
+
+PYENV_VERSION_FILE="$(pyenv-version-file)"
+PYENV_VERSION_ALIAS_FILE="$PYENV_VERSION_FILE-alias"
+
 
 if [ -n "$alias" ]; then
     # Write the version out to disk.
