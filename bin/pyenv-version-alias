@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#
+# Summary: Show or set the alias for the current Python version.
+#
+# Usage: pyenv version-alias [alias-name]
+#        pyenv version-alias --help
+#
+# Pass [alias-name] to set the alias. It will find the corresponding .python-version
+# file and create a .python-version-alias in the same directory. To retrieve the alias
+# simply call it with no options.
+
+
+set -e
+[ -n "$PYENV_DEBUG" ] && set -x
+
+alias=("$1")
+PYENV_GLOBAL_FILE="${PYENV_ROOT}/version"
+
+if [ -z "$PYENV_VERSION" ]; then
+  PYENV_VERSION_FILE="$(pyenv-version-file)"
+  PYENV_VERSION_ALIAS_FILE="$PYENV_VERSION_FILE-alias"
+fi
+
+if [ -n "$alias" ]; then
+    # Write the version out to disk.
+    # Create an empty file. Using "rm" might cause a permission error.
+    > "$PYENV_VERSION_ALIAS_FILE"
+    for version in "${versions[@]}"; do
+        echo "$version" >> "$PYENV_VERSION_ALIAS_FILE"
+    done
+else
+    PYENV_VERSION_NAME="$(pyenv-version-name)"
+    PYENV_VERSION_ALIAS="$(pyenv-version-file-read "$PYENV_VERSION_ALIAS_FILE" || true)"
+    if [ "$PYENV_GLOBAL_FILE" == "$PYENV_VERSION_FILE" ]; then
+        echo "global"
+    elif [ -n "$PYENV_VERSION_ALIAS" ]; then
+        echo "$PYENV_VERSION_ALIAS"
+    else
+        echo "$PYENV_VERSION_NAME"
+    fi
+fi
