@@ -48,10 +48,9 @@ When using `$PYENV_VERSION` env var, you can't use the normal set method. Howeve
 
 ## Integrating it into your toolchain
 
-For [powerlevel9k](https://github.com/bhilburn/powerlevel9k), just add this to your `~/.zshrc`:
+For [powerlevel9k](https://github.com/bhilburn/powerlevel9k), just add this to your `~/.zshrc` (after loading the theme, since you're overriding the function):
 
 ```shell
-set_default POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW false
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
     "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
@@ -63,4 +62,10 @@ prompt_pyenv() {
     fi
   fi
 }
+```
+
+For Emacs, you can use (https://github.com/aiguofer/pyenv.el) and enable aliases with
+
+```lisp
+(setq pyenv-use-alias 't)
 ```
