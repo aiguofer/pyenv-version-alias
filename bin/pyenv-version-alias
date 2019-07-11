@@ -19,8 +19,9 @@ PYENV_GLOBAL_FILE="${PYENV_ROOT}/version"
 if [ -n "$PYENV_VERSION" ]; then
     # version-alias doesn't apply to using PYENV_VERSION env var
 
-        echo "You can't set an alias when using PYENV_VERSION, please set $PYENV_VERSION_ALIAS instead"
     if [ -n "$new_alias" ]; then
+        echo "You can't set an alias when using PYENV_VERSION, please set PYENV_VERSION_ALIAS instead"
+        exit 1
     else
         if [ -n "$PYENV_VERSION_ALIAS" ]; then
             echo "$PYENV_VERSION_ALIAS"
