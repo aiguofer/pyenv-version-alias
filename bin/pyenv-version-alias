@@ -13,14 +13,14 @@
 set -e
 [ -n "$PYENV_DEBUG" ] && set -x
 
-alias=("$1")
+new_alias=("$1")
 PYENV_GLOBAL_FILE="${PYENV_ROOT}/version"
 
 if [ -n "$PYENV_VERSION" ]; then
     # version-alias doesn't apply to using PYENV_VERSION env var
 
-    if [ -n "$alias" ]; then
         echo "You can't set an alias when using PYENV_VERSION, please set $PYENV_VERSION_ALIAS instead"
+    if [ -n "$new_alias" ]; then
     else
         if [ -n "$PYENV_VERSION_ALIAS" ]; then
             echo "$PYENV_VERSION_ALIAS"
@@ -35,12 +35,12 @@ PYENV_VERSION_FILE="$(pyenv-version-file)"
 PYENV_VERSION_ALIAS_FILE="$PYENV_VERSION_FILE-alias"
 
 
-if [ -n "$alias" ]; then
+if [ -n "$new_alias" ]; then
     if [ "$PYENV_GLOBAL_FILE" != "$PYENV_VERSION_FILE" ]; then
         # Write the version out to disk.
         # Create an empty file. Using "rm" might cause a permission error.
         > "$PYENV_VERSION_ALIAS_FILE"
-        echo "$alias" >> "$PYENV_VERSION_ALIAS_FILE"
+        echo "$new_alias" >> "$PYENV_VERSION_ALIAS_FILE"
     fi
 else
     PYENV_VERSION_NAME="$(pyenv-version-name)"
