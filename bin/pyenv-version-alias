@@ -36,10 +36,12 @@ PYENV_VERSION_ALIAS_FILE="$PYENV_VERSION_FILE-alias"
 
 
 if [ -n "$alias" ]; then
-    # Write the version out to disk.
-    # Create an empty file. Using "rm" might cause a permission error.
-    > "$PYENV_VERSION_ALIAS_FILE"
-    echo "$alias" >> "$PYENV_VERSION_ALIAS_FILE"
+    if [ "$PYENV_GLOBAL_FILE" != "$PYENV_VERSION_FILE" ]; then
+        # Write the version out to disk.
+        # Create an empty file. Using "rm" might cause a permission error.
+        > "$PYENV_VERSION_ALIAS_FILE"
+        echo "$alias" >> "$PYENV_VERSION_ALIAS_FILE"
+    fi
 else
     PYENV_VERSION_NAME="$(pyenv-version-name)"
     PYENV_VERSION_ALIAS="$(pyenv-version-file-read "$PYENV_VERSION_ALIAS_FILE" || true)"
