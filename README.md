@@ -52,19 +52,25 @@ For [powerlevel9k](https://github.com/bhilburn/powerlevel9k), just add this to y
 
 ```shell
 prompt_pyenv() {
-  if [[ -n "$PYENV_VERSION" ]]; then
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
-  elif [ $commands[pyenv] ]; then
     local pyenv_version_name="$(pyenv version-alias)"
-    local pyenv_global="global"
-    if [[ "${pyenv_version_name}" != "${pyenv_global}" || "${POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
-      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version_name" 'PYTHON_ICON'
+    if [[ "${pyenv_version_name}" != "global" || "${POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
+        "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version_name" 'PYTHON_ICON'
     fi
-  fi
 }
 ```
 
-For Emacs, you can use (https://github.com/aiguofer/pyenv.el) and enable aliases with
+For [powerlevel10k](https://github.com/romkatv/powerlevel10k) it's slightly different:
+
+```shell
+prompt_pyenv() {
+    local v=$(pyenv version-alias)
+    if [[ "${v}" != "global" || "${POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
+        "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" 'PYTHON_ICON' 0 '' "${v//\%/%%}"
+    fi
+}
+```
+
+For Emacs, you can use https://github.com/aiguofer/pyenv.el and enable aliases with
 
 ```lisp
 (setq pyenv-use-alias 't)
